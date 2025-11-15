@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<style>
+    *{
+        font-family:'Poppins',sans-serif;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box ;
+    }
+    .container{
+        width: 80%;
+        min-height: 80vh;
+        background: linear-gradient(120deg,  rgb(255, 0, 212),rgb(9, 255, 243));
+        padding: 10px;
+        margin: auto;
+        border-radius: 30px;
+        margin-top: 40px;
+    }
+    .todo{
+        background: white;
+        width:100%;
+        max-width: 540px; 
+        padding: 40px 30px 70px;
+        border-radius: 10px;
+        margin: 100px auto 20px;
+    }
+    .todo h2{
+        color: #002765;
+        margin-bottom: 20px;
+        align-items: center;
+        display: flex;
+    }
+    .todo  h2 img{
+        margin-left: 10px;
+        width: 30px;
+    }
+    .row{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        background:#edeef0;
+        border-radius: 20px;
+        padding-left: 20px;
+        margin-bottom: 25px;
+    }
+    input{
+       
+       border: none;
+       outline: none;
+       padding: 10px;
+       background: transparent;
+    }
+    button{
+        border: none;
+        outline: none;
+        background-color: blue;
+        color: white;
+        padding:16px 50px;
+        font-size: 15px;
+        border-radius: 40px;
+        cursor: pointer;
+    }
+    ul li{
+         list-style: none;
+         font-size: 18px;
+         padding: 15px 10px 15px 50px;
+         cursor: pointer;
+         position: relative;
+    }
+    ul li::before{
+        content: '';
+        position: absolute;
+        height: 28px;
+        width: 28px;
+        border-radius: 50%;
+        background-image: url(unchecked.png);
+        background-size: cover;
+        background-position: center;
+        top: 12px;
+        left: 8px;
+
+    }
+    ul li.checked{
+        color: black;
+        text-decoration: line-through;
+    }
+    ul li.checked::before{
+        background-image: url(checked.png);
+
+    }
+    ul li span{
+        position: absolute;
+        right: 0;
+        top: 5px;
+        width: 40px;
+        height: 40px;
+        font-size: 22px;
+        color: black ;
+        line-height: 50px;
+        text-align: center;
+        border-radius: 50%;
+    }
+    ul li span:hover{
+        background-color: #edeef0;
+    }
+  
+</style>
+<body>
+    <div class="container">
+        <div class="todo">
+            <h2>Task Manager <img src="icon.png"></h2>
+            <div class="row">
+                <input type="text" id="input" placeholder="Add Your Task">
+                <button onclick="addtask()">ADD</button>
+            </div>
+            <div>
+                <ul id="list">
+                    <!--li class="checked">Task 1</li>
+                    <li>Task 2</li>
+                    <li>Task 3 </li -->
+                </ul>
+            </div>
+        </div>
+
+    </div>
+    
+</body>
+<script >
+    let input=document.getElementById("input");
+    let list=document.getElementById("list");
+
+    function addtask(){
+        if(input.value == ''){
+            alert("You Must Write any task");
+        }
+        else{
+            let li=document.createElement("li");
+            li.innerHTML=input.value;
+            list.appendChild(li);
+            let span=document.createElement("span");
+            span.innerHTML="\u00d7";
+            li.appendChild(span);
+        }
+        input.value="";
+        savedata();
+    
+    }
+    list.addEventListener("click",function(e){
+        if(e.target.tagName === "LI"){
+            e.target.classList.toggle("checked");
+            savedata();
+        }
+        else if(e.target.tagName === "SPAN"){
+            e.target.parentElement.remove();
+            savedata();
+        }
+    },false);  
+    function savedata(){
+        localStorage.setItem("data",list.innerHTML);
+    }
+    function showtask(){
+        list.innerHTML=localStorage.getItem("data");
+    }
+    showtask();
+
+</script>
+</html>
